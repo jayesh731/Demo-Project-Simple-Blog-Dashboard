@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        form {
+            border: 1px solid black;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 400px;
+        }
+
+        .post-container {
+            display: flex;
+            /* justify-content: space-between; */
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 0px 30px;
+        }
+
+        .item {
+            width: 200px;
+            border: 1px solid black;
+            border-radius: 10px;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form>
+            <input type="text" placeholder="Enter title" id="title" style="padding: 10px;" required>
+            <textarea id="textarea" placeholder="Enter Content" style="height: 150px; padding: 10px;"
+                required></textarea>
+            <div style="display: flex; gap: 10px;" class="radioContainer">
+                <label for="localStorage"><input type="radio" name="option" id="localStorage" required>LocalStorage</label>
+                <label for="sessionStorage"><input type="radio" name="option" id="sessionStorage">SessionStorage</label>
+                <label for="coockie"><input type="radio" name="option" id="coockie">Coockie</label>
+            </div>
+            <button id="saveBtn" style="padding: 10px;">Save</button>
+        </form>
+        <button style="padding: 10px; margin-top: 10px;" onclick="clearLocalStorage()">Clear Storage</button>
+        <h1>Blog Dashboard</h1>
+        <p style="color: red;" id="error"></p>
+        <div class="post-container">
+        </div>
+    </div>
+
+    <!-- Link js -->
+    <script src="./script.js"></script>
+</body>
+
+</html>
