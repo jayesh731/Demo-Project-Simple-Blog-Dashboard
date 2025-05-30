@@ -37,7 +37,7 @@ async function fetchUser() {
         const cookies = document.cookie
             .split("; ")
             .find(row => row.startsWith("posts="));
-        savedPost = cookies ? decodeURIComponent(cookies.split("=")[1]) : [];
+        savedPost = cookies ? JSON.parse(decodeURIComponent(cookies.split("=")[1])) : [];
     }
 
     if (savedPost) {
