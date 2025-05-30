@@ -1,3 +1,9 @@
+* {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -26,4 +32,74 @@ form {
     border: 1px solid black;
     border-radius: 10px;
     padding: 10px;
+}
+
+.item p {
+    margin: 13px 0;
+}
+
+.item button {
+    padding: 5px;
+}
+
+.userDetails {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 300px;
+    height: 100%;
+    background-color: #f0f0f0;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: left 0.3s ease;
+    z-index: 1000;
+}
+
+.userDetails.show {
+    left: 0;
+    /* Slide in */
+}
+
+/* popup  */
+
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-content{
+    position: relative;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.close-btn {
+    position: absolute;
+    font-size: 40px;
+    right: 20px;
+    top: 20px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#popupFormElement input,textarea,button{
+    padding: 10px 5px;
+}
+
+#popupFormElement textarea{
+    height: 150px;
+}
+
+.hidden{
+    display: none;
 }

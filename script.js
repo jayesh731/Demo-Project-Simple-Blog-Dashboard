@@ -4,6 +4,17 @@ const saveBtn = document.getElementById('saveBtn');
 const postContainer = document.querySelector('.post-container');
 const form = document.querySelector('form');
 const radioContainer = document.querySelector('.radioContainer');
+const item = document.querySelector('.item');
+const email = document.getElementById('email');
+const name = document.getElementById('name');
+const loading = document.getElementById('Loading');
+// popup
+const popupForm = document.getElementById('popupForm');
+const closePopupBtn = document.getElementById('closePopupBtn');
+const popupTitle = document.getElementById('popupTitle');
+const popupBody = document.getElementById('popupBody');
+const popupFormElement = document.getElementById('popupFormElement');
+
 
 let posts = [];
 
@@ -77,7 +88,7 @@ fetchUser();
 function display() {
     const item = posts.map((post) => {
         return `
-        <div class="item">
+        <div class="item" id=${post.id}>
                 <h3>${post.title}</h3>
                 <p>${post.body}</p>
                 <button class="delete" id=${post.id}>Delete</button>
@@ -126,6 +137,7 @@ function addPost() {
     posts.unshift(newPost);
     savePosts();
     fetchUser();
+    
 }
 
 // delete Post
@@ -138,7 +150,27 @@ function deletePost(id) {
 
 // Edit post
 function editPost(id) {
-    let idN = Number(id);
+    popupForm.classList.remove('hidden');
+    closePopupBtn.addEventListener("click", () => {
+        popupForm.classList.add('hidden');
+    })
+
+    popupFormElement.addEventListener("submit", (e) => {
+        e.preventDefault();
+        let idN = Number(id);
+        newTitle = popupTitle.value;
+        newContent = popupBody.value;
+        posts.forEach((post) => {
+            if (post.id == idN) {
+                post.title = newTitle;
+                post.body = newContent;
+            }
+        })
+        savePosts();
+        display();
+        popupForm.classList.add('hidden');
+    })
+    /* let idN = Number(id);
     newTitle = prompt('Enter title');
     newContent = prompt('Enter Text');
     posts.forEach((post) => {
@@ -148,7 +180,7 @@ function editPost(id) {
         }
     })
     savePosts();
-    display();
+    display(); */
 }
 
 // add post with Http Request [POST Request]
@@ -201,6 +233,36 @@ function deletePostHttp(id) {
         })
 }
 
+// show username and email
+async function showUserInfo(id) {
+    // Reset UI before loading
+    name.textContent = '';
+    email.textContent = '';
+    loading.textContent = "Loading...";
+
+    try {
+        const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`);
+        if (!res.ok) {
+            throw new Error(`HTTP error! Status: ${res.status}`);
+        }
+        const data = await res.json();
+
+        name.textContent = `Name : ${data.name}`;
+        email.textContent = `Email : ${data.email}`;
+    } catch (error) {
+        name.textContent = "Error";
+        email.textContent = "Failed to load";
+        console.error("Failed to fetch user info:", error);
+    } finally {
+        loading.textContent = "";
+    }
+}
+
+// show username and email
+function closeUserDetails() {
+    document.querySelector(".userDetails").classList.remove("show");
+}
+
 
 // Event Listener
 
@@ -218,10 +280,15 @@ postContainer.addEventListener("click", (e) => {
         deletePost(id);
         deletePostHttp(id);
     }
-    if (e.target.classList.value == "edit") {
+    else if (e.target.classList.value == "edit") {
         const id = e.target.id;
         editPost(id);
-        editPostHttp(id);
+        // editPostHttp(id);
+    } else {
+        if (e.target.closest(".item")) {
+            showUserInfo(e.target.closest(".item").id);
+            document.querySelector(".userDetails").classList.add("show");
+        }
     }
 })
 
@@ -230,4 +297,5 @@ radioContainer.addEventListener("change", (e) => {
     localStorage.setItem('radioState', e.target.id);
     fetchUser();
 })
+
 

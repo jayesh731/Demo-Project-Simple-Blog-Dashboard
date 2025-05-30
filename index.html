@@ -15,19 +15,41 @@
             <textarea id="textarea" placeholder="Enter Content" style="height: 150px; padding: 10px;"
                 required></textarea>
             <div style="display: flex; gap: 10px;" class="radioContainer">
-                <label for="localStorage"><input type="radio" name="option" id="localStorage" required>LocalStorage</label>
-                <label for="sessionStorage"><input type="radio" name="option" id="sessionStorage">SessionStorage</label>
-                <label for="coockie"><input type="radio" name="option" id="coockie">Coockie</label>
+                <label for="localStorage"><input type="radio" name="option" id="localStorage" style="margin-right: 5px;"
+                        required>LocalStorage</label>
+                <label for="sessionStorage"><input type="radio" name="option" id="sessionStorage"
+                        style="margin-right: 5px;">SessionStorage</label>
+                <label for="coockie"><input type="radio" name="option" id="coockie"
+                        style="margin-right: 5px;">Coockie</label>
             </div>
             <button id="saveBtn" style="padding: 10px;">Save</button>
         </form>
         <button style="padding: 10px; margin-top: 10px;" onclick="clearLocalStorage()">Clear Storage</button>
-        <h1>Blog Dashboard</h1>
+        <h1 style="margin: 13px 0 ;">Blog Dashboard</h1>
         <p style="color: red;" id="error"></p>
         <div class="post-container">
         </div>
     </div>
-
+    <div class="userDetails">
+        <button onclick="closeUserDetails()" style="float:right; padding: 5px;">X</button>
+        <h2>User details</h2>
+        <p style="margin-bottom: 20px;">More info can go here...</p>
+        <p id="Loading"></p>
+        <p id="name" style="font-size: larger;"></p>
+        <p id="email" style="font-size: larger;"></p>
+    </div>
+    <!-- Popup -->
+    <div id="popupForm" class="popup hidden">
+        <div class="popup-content">
+            <span class="close-btn" id="closePopupBtn">&times;</span>
+            <h2>Edit Post</h2>
+            <form id="popupFormElement" style="margin-top: 20px; border-radius:10px;">
+                <input type="text" id="popupTitle" placeholder="Title" required>
+                <textarea id="popupBody" placeholder="Content" required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
     <!-- Link js -->
     <script src="./script.js"></script>
 </body>
