@@ -7,6 +7,10 @@ const radioContainer = document.querySelector('.radioContainer');
 
 let posts = [];
 
+// global variable for edit post
+let newTitle;
+let newContent;
+
 // clear LocalStorage
 function clearLocalStorage() {
     localStorage.clear();
@@ -30,19 +34,30 @@ async function fetchUser() {
     if (radio == "localStorage") {
         savedPost = localStorage.getItem('blogPosts');
     }
-    else if (radio == "sessionStorage") {
+    if (radio == "sessionStorage") {
         savedPost = sessionStorage.getItem('blogPosts');
     }
-    else if (radio == "coockie") {
+    if (radio == "coockie") {
         const cookies = document.cookie
             .split("; ")
             .find(row => row.startsWith("posts="));
-        savedPost = cookies ? JSON.parse(decodeURIComponent(cookies.split("=")[1])) : [];
+        if (cookies) {
+            try {
+                savedPost = cookies ? decodeURIComponent(cookies.split("=")[1]) : [];
+            } catch (err) {
+                console.error("Error decoding cookie:", err);
+            }
+        }
     }
 
     if (savedPost) {
-        posts = JSON.parse(savedPost);
-        display();
+        try {
+            posts = JSON.parse(savedPost);
+            display();
+            console.log(posts);
+        } catch (error) {
+            handelError("Errro while parse savedPost", error)
+        }
     } else {
         try {
             const response = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=10');
@@ -85,7 +100,10 @@ function savePosts() {
         sessionStorage.setItem('blogPosts', JSON.stringify(posts));
     }
     else if (radio == "coockie") {
-        document.cookie = "posts=" + encodeURIComponent(JSON.stringify(posts)) + "; path=/";
+        const expiry = new Date();
+        expiry.setDate(expiry.getDate() + 7); // 7 days
+        document.cookie = "posts=" + encodeURIComponent(JSON.stringify(posts)) +
+            "; path=/; expires=" + expiry.toUTCString();
     }
     else {
         alert("Select Storages");
@@ -201,8 +219,6 @@ postContainer.addEventListener("click", (e) => {
         deletePostHttp(id);
     }
     if (e.target.classList.value == "edit") {
-        let newTitle;
-        let newContent;
         const id = e.target.id;
         editPost(id);
         editPostHttp(id);
@@ -210,7 +226,7 @@ postContainer.addEventListener("click", (e) => {
 })
 
 // radio button
-radioContainer.addEventListener("click", (e) => {
+radioContainer.addEventListener("change", (e) => {
     localStorage.setItem('radioState', e.target.id);
     fetchUser();
 })
